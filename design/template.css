@@ -4,7 +4,9 @@ body {
     margin: 0;
     overflow-x: hidden;
     font-family: Arial, Helvetica, sans-serif;
-    color: white;
+    color: black;
+    user-select: none;
+    transition-duration: 0.5s;
 }
 
 button {
@@ -37,7 +39,7 @@ button {
 }
 
 .sidebar_items:hover {
-    background: rgba(50, 50, 50, 1);
+    background: rgba(13, 105, 139, 1);
     color: rgba(250, 250, 250, 1);
     font-size: 1.3em;
 }
@@ -76,7 +78,7 @@ button {
 .profile_bar {
     position: fixed;
     height: 8vh;
-    width: 12vw;
+    width: 16vw;
     min-width: 150px;
     margin-top: 70px;
     right: 0;
@@ -86,7 +88,7 @@ button {
 
 .profile_bar button {
     float: left;
-    height: 100%;
+    height: 8vh;
     width: 100%;
     font-size: 1.2em;
     cursor: pointer;
@@ -102,17 +104,27 @@ button {
 
 .content {
     float: left;
-    min-height: 100vh;
+    min-height: 90vh;
     width: 100vw;
     margin-top: 70px;
     background: rgba(50, 50, 50, 1);
+}
+
+.content-index {
+    float: left;
+    min-height: 100vh;
+    width: 100vw;
+    margin-top: 70px;
+    background: url("resources/background.webp");
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat;
 }
 
 .page_header {
     float: left;
     width: 60vw;
     height: 9vh;
-    margin-left: 20vw;
+    margin-left: 10vw;
 }
 
 .page_header button {
@@ -160,14 +172,6 @@ button {
     cursor: pointer;
 }
 
-.table_responsive {
-    float: left;
-    height: auto;
-    width: 80vw;
-    margin-left: 10vw;
-    margin-bottom: 50px;
-}
-
 table {
     border-collapse: collapse;
     width: 100%;
@@ -210,35 +214,6 @@ th {
 
 .table_button:hover {
     background: rgba(50, 50, 50, 1);
-}
-
-.tblPage {
-    float: left;
-    height: 8vh;
-    width: 80%;
-    min-width: 600px;
-    margin-left: 10%;
-}
-
-.tblPage button {
-    float: left;
-    height: 3vh;
-    width: 6%;
-    margin-left: 2%;
-    margin-top: 2vh;
-    background: rgba(50, 200, 50, 1);
-    color: rgba(250, 250, 250, 1);
-    border: none;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-.tblPage button:hover {
-    background: rgba(50, 50, 50, 1);
-}
-
-.tblPage button:disabled {
-    background: rgba(50, 50, 200, 1);
 }
 
 footer {
@@ -311,6 +286,10 @@ footer {
     outline: none;
 }
 
+.modal-footer button:nth-child(2) {
+    background: rgba(104, 6, 104, 1);
+}
+
 .modal-footer button:hover {
     background-color: rgba(50, 50, 50, 1);
     color: rgba(250, 250, 250,);
@@ -370,6 +349,14 @@ footer {
     outline: none;
 }
 
+.input_group input[type="date"] {
+    float: left;
+    width: 86%;
+    height: 30px;
+    border: 1px solid black;
+    outline: none;
+}
+
 .input_group input[type="file"] {
     float: left;
     width: 87%;
@@ -377,6 +364,14 @@ footer {
     border: 1px solid black;
     outline: none;
     font-size: 1.3em;
+}
+
+.input_group input[type="color"] {
+    float: left;
+    width: 86%;
+    height: 32px;
+    border: 1px solid black;
+    outline: none;
 }
 
 .button_form {
@@ -409,46 +404,33 @@ footer {
     display: none;
 }
 
+#calendar {
+    background: white;
+    color: black;
+    width: 100%;
+    min-height: 800px;
+    transition-duration: 1s;
+}
+
+.responsive_div {
+    background: white;
+    width: 80%;
+    min-height: 800px;
+    margin-left: 10%;
+    overflow-x: scroll;
+    overflow-y: visible;
+}
+
 @media only screen and (max-width: 1000px) {
     .page_header {
         width: 80vw;
         margin-left: 10vw;
-    }
-    
-    .table_responsive {
-        width: 80vw;
-        margin-left: 10vw;
-        overflow-x: auto;
-    }
-
-    .tblPage {
-        width: 80%;
-        margin-left: 10%;
     }
 }
 
 @media only screen and (max-width: 600px) {
     .page_header {
         width: 100vw;
-        margin-left: 0;
-    }
-    
-    .table_responsive {
-        width: 100vw;
-        margin-left: 0;
-        overflow-x: auto;
-    }
-
-    table {
-        width: auto;
-    }
-
-    th, td {
-        white-space: nowrap;
-    }
-
-    .tblPage {
-        width: 100%;
         margin-left: 0;
     }
 
@@ -468,4 +450,12 @@ footer {
 
 .container_form .form_group .input_icon {
     background: rgba(250, 250, 250, 1);
+}
+
+@media only screen and (orientation: portrait) {
+
+    .modal {
+        width: 100vw;
+        margin-left: 0vw;
+    }
 }

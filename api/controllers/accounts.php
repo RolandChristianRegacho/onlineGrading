@@ -117,6 +117,7 @@ else if(strtoupper($requestMethod) == post) {
             generateAccountForAll($con);
         }
     }
+    if($data->action_type == "")
 
     error("Page not found", "HTTP/1.1 404 Not Found");
 }
@@ -199,7 +200,7 @@ function checkIfAccountAlreadyExist($con, $record_id, $account_type) {
     $result = SelectExecuteStatement($con, $sql, $params);
     $flag = false;
 
-    while($row = $result -> fetch_assoc()) {
+    while($result -> fetch_assoc()) {
         $flag = true;
         break;
     }

@@ -1,14 +1,84 @@
+//Sample data of possible object template to be passed to paginate a table
+/* 
+const details = {
+    //This sets the url on where the request will be coming from
+    url: "./api/controllers/changelogs.php",
+    //This sets wether a button will be generated at the end
+    method: {
+        edit: "editAccount(this);",
+        delete: "deleteAccount(this);"
+    },
+    //This sets what table to use
+    table_id: "tblChangelogs",
+    //This sets the current page to render
+    current_page: 1,
+    //This sets table addiitonal styles
+    table_style: [
+        {
+            type: "th",
+            propertyName: "background",
+            value: "red"
+        }
+    ],
+    //This sets certain td styles
+    style: [
+        {
+            parameter: 'version',
+            value: "text-align: center;"
+        }
+    ],
+    //this sets certain th styles
+    header: {
+        element: [
+            {
+                id: "hdr_version",
+                properties: [
+                    {
+                        propertyName: "min-width",
+                        value: "150px"
+                    },
+                    {
+                        propertyName: "text-align",
+                        value: "center"
+                    },
+                ]
+            },
+            {
+                id: "hdr_date",
+                properties: [
+                    {
+                        propertyName: "min-width",
+                        value: "150px"
+                    }
+                ]
+            }
+        ]
+    }
+}
+*/
+
+
 const MAX_PAGE_COUNT = 10
 
 async function paginateTable(data = {}) {
     var row = "";
-    let additional_params = "page=" + data.url_page
+    let additional_params = "page=" + data.current_page
 
-    if(data.additional_information) {
+    if(data.hasOwnProperty("additional_information")) {
         additional_params += "&" + data.additional_information
     }
 
-    GetData(data.url, additional_params)
+    if(data.hasOwnProperty("table_style")) {
+        setTableDesign(data.table_style)
+    }
+
+    if(data.hasOwnProperty("header")) {
+        for(let items in data.header.element) {
+            setHeaderDesign(data.header.element[items].id, data.header.element[items].properties)
+        }
+    }
+
+    fetchApi(data.url, additional_params)
     .then(response => {
         if(response.type == "success") {
             let id = "";
@@ -22,11 +92,28 @@ async function paginateTable(data = {}) {
                         id = value
                     }
                     else {
-                        
-                        row += `
-                        <td>
-                            ${value == null ? "N/A" : value}
-                        </td>`
+                        if(data.hasOwnProperty("style")) {
+                            for(let index in data.style) {
+                                if(data.style[index].parameter == key) {
+                                    row += `
+                                    <td style="${data.style[index].value}">
+                                        ${value == null ? "N/A" : value}
+                                    </td>`
+                                }
+                                else {
+                                    row += `
+                                    <td>
+                                        ${value == null ? "N/A" : value}
+                                    </td>`
+                                }
+                            }
+                        }
+                        else {
+                            row += `
+                            <td>
+                                ${value == null ? "N/A" : value}
+                            </td>`
+                        }
                     }
                 });
 
@@ -75,28 +162,35 @@ async function paginateTable(data = {}) {
     })
 }
 
+function setTableDesign(data = {}) {
+    for(let items in data) {
+        $(`${data[items].type}`).css(data[items].propertyName, data[items].value)
+    }
+}
+
+function setHeaderDesign(id, data = {}) {
+    for(let items in data) {
+        $(`#${id}`).css(data[items].propertyName, data[items].value)
+    }
+}
+
 function nextPage(page, data) {
     let details = data
-
-    details.url_page = page
     details.current_page = page
 
     paginateTable(details)
 }
 
-function renderPageButtons(length, page_id, current_page, data = {}) {
+function renderPageButtons(length, page_id, current_page, data_object = {}) {
     if(length > MAX_PAGE_COUNT) {
         length = length / MAX_PAGE_COUNT
-        if(length % 1 != 0) {
-            length = parseInt(length)
-            length++
-        }
+        length = Math.ceil(length)
     }
     else {
         length = 1
     }
     
-    data = JSON.stringify(data)
+    let data = JSON.stringify(data_object)
     currentPage = parseInt(current_page)
     const range = 4
     let page = ""
